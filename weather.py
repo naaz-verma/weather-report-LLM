@@ -65,38 +65,38 @@ response_LLM = model.invoke([
 ])
 print("\nSummary:\n", response_LLM.content)
 
-# def structure_the_response(response, *args):
-#     """
+def structure_the_response(response, *args):
+    """
     
-#     Your code goes here.
-#     This function is set as a placeholder to get guide to the results expectations. You can always have own approach to set the functions.
+    Your code goes here.
+    This function is set as a placeholder to get guide to the results expectations. You can always have own approach to set the functions.
     
-#     """
+    """
 
-#     return structured_response
+    return structured_response
 
 
-# def find_research_references_correlating_with_each_news_snnipets(structured_response):
-#     """
-#     Your code goes here.
-#     This function is set as a placeholder to get guide to the results expectations. You can always have own approach to set the functions.
+def find_research_references_correlating_with_each_news_snnipets(structured_response):
+    """
+    Your code goes here.
+    This function is set as a placeholder to get guide to the results expectations. You can always have own approach to set the functions.
     
 
-#     Expection with this block is to have a comparison of the news with the ground truth so that the legitimacy of the report could be
-#     maintanined.
-#     """
+    Expection with this block is to have a comparison of the news with the ground truth so that the legitimacy of the report could be
+    maintanined.
+    """
 
-#     return enriched_responses, references_dict
+    return enriched_responses, references_dict
 
 
-# def define_ui_and_visual_elements(enriched_responses, references_dict):
-#     """
-#     Your code goes here.
-#     This function is set as a placeholder to get guide to the results expectations. You can always have own approach to set the functions.
+def define_ui_and_visual_elements(enriched_responses, references_dict):
+    """
+    Your code goes here.
+    This function is set as a placeholder to get guide to the results expectations. You can always have own approach to set the functions.
     
-#     """
+    """
 
-#     return updated_risks_report
+    return updated_risks_report
 
 
 # ### App UI Section ###
