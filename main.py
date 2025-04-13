@@ -8,6 +8,11 @@ from format_utils import (
 from reference_utils import find_research_references_correlating_with_each_news_snnipets
 from summarizer import summarize_text
 import os
+from classifier import classify_article
+from analyze_forecast import analyze_forecast
+
+
+
 
 load_dotenv()
 
@@ -26,12 +31,24 @@ def main():
         # Step 3: Structure
         structured = structure_the_response(articles)
 
+        # Classify each summary
+        for article in structured:
+            summary = article.get("summary", "")
+            article['tags'] = classify_article(summary)
+
+            forecast_check = analyze_forecast(summary)  # Check forecast consistency
+            article["forecast_consistency"] = forecast_check
+
         # Step 4: Research References
         enriched_articles, references = find_research_references_correlating_with_each_news_snnipets(structured)
 
         # Final Output
         for item in enriched_articles:
-            print(f"\nTitle: {item['title']}\nSummary: {item['summary']}\nReferences: {item['references']}")
+            print(f"\nTitle: {item['title']}")
+            print(f"Summary: {item['summary']}")
+            print(f"Tags: {item.get('tags', [])}")
+            print(f"Forecast Match: {item['forecast_consistency']}")
+            print(f"References: {item['references']}")
 
     except Exception as e:
         print("[!] Summarization error:", str(e))
