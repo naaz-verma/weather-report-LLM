@@ -7,8 +7,17 @@ def search_research_sources(keywords: List[str]) -> List[str]:
 
 def extract_keywords(text: str) -> List[str]:
     kw_model = KeyBERT()
-    keywords = kw_model.extract_keywords(text, stop_words='english', top_n=5)
-    return [kw[0] for kw in keywords]
+    keywords = kw_model.extract_keywords(
+        text,
+        keyphrase_ngram_range=(1, 2),
+        stop_words='english',
+        top_n=5,
+        use_mmr=True,
+        diversity=0.7
+    )
+    manual_boost = ["Hyderabad", "climate change", "heatwave", "insurance", "weather trends"]
+    return list({kw[0] for kw in keywords}.union(manual_boost))
+
 
 def find_research_references_correlating_with_each_news_snnipets(structured_response):
     enriched_responses = []

@@ -18,8 +18,7 @@ load_dotenv()
 
 def main():
     # Step 1: Fetch
-    query = "heatwave impact on insurance in India"
-    articles = fetch_climate_news(query)
+    articles = fetch_climate_news()
     print("\n[+] Raw Articles:\n", format_news_articles(articles))
 
     try:
@@ -34,10 +33,12 @@ def main():
         # Classify each summary
         for article in structured:
             summary = article.get("summary", "")
+            content = article.get("content", summary)
+            url = article.get("url", "")
+            
             article['tags'] = classify_article(summary)
+            article["forecast_consistency"] = analyze_forecast(content, url)
 
-            forecast_check = analyze_forecast(summary)  # Check forecast consistency
-            article["forecast_consistency"] = forecast_check
 
         # Step 4: Research References
         enriched_articles, references = find_research_references_correlating_with_each_news_snnipets(structured)
