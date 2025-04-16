@@ -18,8 +18,14 @@ load_dotenv()
 
 def main():
     # Step 1: Fetch
-    articles = fetch_climate_news()
+    articles = fetch_climate_news(mode="rss", max_articles=3)
     print("\n[+] Raw Articles:\n", format_news_articles(articles))
+    
+    
+    # articles = fetch_climate_news(mode="recent")
+    # print("\n[+] Raw Articles:\n", format_news_articles(articles))
+    # articles = fetch_climate_news(mode="historical")
+    # print("\n[+] Raw Articles:\n", format_news_articles(articles))
 
     try:
         # Step 2: Summarize
