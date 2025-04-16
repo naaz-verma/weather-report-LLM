@@ -92,3 +92,21 @@ def analyze_forecast(text: str, url: str = ""):
     df = detect_anomalies(df)
     df = flag_heatwave_periods(df)
     return check_consistency(text, url, df)
+
+def match_news_with_forecast(news_list, forecast_df):
+    matched_articles = []
+    for article in news_list:
+        year, month = extract_date_from_url(article.get("url", ""))
+        if not year:
+            year, month = extract_date_from_text(article.get("summary", ""))
+        if not year or not month:
+            continue
+
+        match_df = forecast_df[(forecast_df["Year"] == year) & (forecast_df["Month"] == month)]
+        if not match_df.empty:
+            article["forecast_matched"] = True
+            article["forecast_values"] = match_df[['ds', 'yhat']].to_dict(orient="records")
+        else:
+            article["forecast_matched"] = False
+        matched_articles.append(article)
+    return matched_articles

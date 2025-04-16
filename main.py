@@ -9,23 +9,21 @@ from reference_utils import find_research_references_correlating_with_each_news_
 from summarizer import summarize_text
 import os
 from classifier import classify_article
-from analyze_forecast import analyze_forecast
-
-
-
+from analyze_forecast import analyze_forecast, match_news_with_forecast
+from output_formatter import format_output
+from validator import validate_article
+from forecast_generator import generate_forecast
+from save_dataset import save_to_dataset
 
 load_dotenv()
 
 def main():
+    # 🔁 Choose the mode: "recent", "historical", or "rss"
+    mode = "rss"  # CHANGE THIS TO "historical" or "rss" when needed
+
     # Step 1: Fetch
-    articles = fetch_climate_news(mode="rss", max_articles=3)
-    print("\n[+] Raw Articles:\n", format_news_articles(articles))
-    
-    
-    # articles = fetch_climate_news(mode="recent")
-    # print("\n[+] Raw Articles:\n", format_news_articles(articles))
-    # articles = fetch_climate_news(mode="historical")
-    # print("\n[+] Raw Articles:\n", format_news_articles(articles))
+    articles = fetch_climate_news(mode=mode)
+    print(f"\n[+] Raw Articles ({mode}):\n", format_news_articles(articles))
 
     try:
         # Step 2: Summarize
@@ -36,29 +34,51 @@ def main():
         # Step 3: Structure
         structured = structure_the_response(articles)
 
-        # Classify each summary
+        # Step 4: Classify + Validate + Forecast (if not RSS)
         for article in structured:
             summary = article.get("summary", "")
             content = article.get("content", summary)
             url = article.get("url", "")
-            
+
+            # Tagging always happens
             article['tags'] = classify_article(summary)
-            article["forecast_consistency"] = analyze_forecast(content, url)
 
+            # Only analyze forecast and validate if NOT RSS
+            if mode in ["recent", "historical"]:
+                article["forecast_consistency"] = analyze_forecast(content, url)
+                article["validation"] = validate_article(article, article_type=mode)
+            else:
+                article["forecast_consistency"] = "N/A"
+                article["validation"] = validate_article(article, article_type="rss")
 
-        # Step 4: Research References
+        # Step 5: Research References
         enriched_articles, references = find_research_references_correlating_with_each_news_snnipets(structured)
 
-        # Final Output
-        for item in enriched_articles:
-            print(f"\nTitle: {item['title']}")
-            print(f"Summary: {item['summary']}")
-            print(f"Tags: {item.get('tags', [])}")
-            print(f"Forecast Match: {item['forecast_consistency']}")
-            print(f"References: {item['references']}")
+        # Step 6: Output
+        output_style = "bullet"  # or "json"
+        if output_style == "bullet":
+            for item in enriched_articles:
+                formatted = format_output(item, style=output_style)
+                print(formatted)
+        else:
+            for article in enriched_articles:
+                print(f"\nTitle: {article['title']}")
+                print(f"Summary: {article['summary']}")
+                print(f"Tags: {article.get('tags', [])}")
+                print(f"Forecast Match: {article['forecast_consistency']}")
+                print(f"References: {article['references']}")
+                print(f"Validation: {article['validation']}")
+
+        # Step 7: Forecast matching and dataset saving (ONLY for recent/historical)
+        if mode in ["recent", "historical"]:
+            forecast_df = generate_forecast()
+            enriched_articles = match_news_with_forecast(enriched_articles, forecast_df)
+            save_to_dataset(enriched_articles)
+            print("[✔] Saved dataset to dataset.jsonl")
 
     except Exception as e:
         print("[!] Summarization error:", str(e))
+
 
 if __name__ == "__main__":
     main()

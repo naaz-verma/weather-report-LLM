@@ -6,12 +6,14 @@ def summarize_text(text: str, model_name="facebook/bart-large-cnn", max_chunk_to
 
     # Prepend the focused summarization instruction
     instruction = (
-        "Summarize the following article with a focus on:\n"
-        "- Climate trends in Hyderabad\n"
-        "- Historical comparisons (1950–2020)\n"
-        "- Insurance or economic impact if mentioned\n\n"
-        "Article:\n"
-    )
+    "Extract the following from the article:\n"
+    "- Key facts and climate trends in Hyderabad\n"
+    "- Historical comparisons (1950–2020) if available\n"
+    "- Insurance or economic impact (if mentioned)\n"
+    "- Any future risk or prediction\n\n"
+    "Return the answer in JSON with keys: 'trends', 'comparisons', 'impacts', 'risks'.\n\n"
+    "Article:\n"
+)
 
     full_text = instruction + text
     chunks = chunk_text(full_text, max_tokens=max_chunk_tokens)
