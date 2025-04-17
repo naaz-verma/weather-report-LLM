@@ -11,6 +11,8 @@ def save_to_dataset(articles, filename="dataset.jsonl"):
                 "references": article.get("references", []),
                 "url": article.get("url"),
                 "date_collected": article.get("date", None),
+                "Forecast Match": article.get('forecast_consistency',None),
+                "Validation": article.get('validation',None),
             }
             json.dump(entry, f)
             f.write("\n")

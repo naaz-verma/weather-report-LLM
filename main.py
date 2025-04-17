@@ -19,7 +19,7 @@ load_dotenv()
 
 def main():
     # 🔁 Choose the mode: "recent", "historical", or "rss"
-    mode = "rss"  # CHANGE THIS TO "historical" or "rss" when needed
+    mode = "historical"  # CHANGE THIS TO "historical" or "rss" when needed
 
     # Step 1: Fetch
     articles = fetch_climate_news(mode=mode)
@@ -68,17 +68,22 @@ def main():
                 print(f"Forecast Match: {article['forecast_consistency']}")
                 print(f"References: {article['references']}")
                 print(f"Validation: {article['validation']}")
-
-        # Step 7: Forecast matching and dataset saving (ONLY for recent/historical)
-        if mode in ["recent", "historical"]:
-            forecast_df = generate_forecast()
-            enriched_articles = match_news_with_forecast(enriched_articles, forecast_df)
-            save_to_dataset(enriched_articles)
-            print("[✔] Saved dataset to dataset.jsonl")
+        
+        return enriched_articles
+        # # Step 7: Forecast matching and dataset saving (ONLY for recent/historical)
+        # if mode in ["recent", "historical"]:
+        #     forecast_df = generate_forecast()
+        #     enriched_articles = match_news_with_forecast(enriched_articles, forecast_df)
+        #     save_to_dataset(enriched_articles)
+        #     print("[✔] Saved dataset to dataset.jsonl")
 
     except Exception as e:
         print("[!] Summarization error:", str(e))
 
 
 if __name__ == "__main__":
-    main()
+    enriched_articles = main()  # Capture the return value
+    if enriched_articles:
+        save_to_dataset(enriched_articles)
+    else:
+        print("[!] No enriched articles returned from main()")
