@@ -17,9 +17,9 @@ from save_dataset import save_to_dataset
 
 load_dotenv()
 
-def main():
+def main(mode="historical", output_style="bullet"):
     # 🔁 Choose the mode: "recent", "historical", or "rss"
-    mode = "historical"  # CHANGE THIS TO "historical" or "rss" when needed
+      # CHANGE THIS TO "historical" or "rss" when needed
 
     # Step 1: Fetch
     articles = fetch_climate_news(mode=mode)
@@ -55,7 +55,7 @@ def main():
         enriched_articles, references = find_research_references_correlating_with_each_news_snnipets(structured)
 
         # Step 6: Output
-        output_style = "bullet"  # or "json"
+         # or "json"
         if output_style == "bullet":
             for item in enriched_articles:
                 formatted = format_output(item, style=output_style)

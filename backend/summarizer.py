@@ -1,5 +1,5 @@
 from transformers import pipeline
-from utils.chunking import chunk_text
+from chunking import chunk_text
 
 def summarize_text(text: str, model_name="facebook/bart-large-cnn", max_chunk_tokens=1000):
     summarizer = pipeline("summarization", model=model_name)

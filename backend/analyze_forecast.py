@@ -15,7 +15,9 @@ def load_weather_data(csv_path='C:/Users/ASUS/Desktop/hackathon/weather-report-L
 def detect_anomalies(df):
     avg_Temp = df['Temp Max'].mean()
     df['Temp_anomaly'] = df['Temp Max'] > (avg_Temp + 4)
-    df['heavy_Rain'] = df['Rain'] > 50
+    threshold = df['Rain'].quantile(0.95)  # Top 5% of rainy days
+    df['heavy_Rain'] = df['Rain'] > threshold
+
     return df
 
 def flag_heatwave_periods(df):
