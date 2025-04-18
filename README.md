@@ -98,7 +98,7 @@ streamlit run app/main_app.py
     - https://scholar.google.com/scholar?q=heatwave telangana
     - https://scholar.google.com/scholar?q=recorded
 
-🔹 **Content Validation**: {'confidence': 60, 'flags': ['May lack insurance relevance', 'Missing location context: Hyderabad']}
+🔹 **Content Validation**: {'confidence': 80, 'flags': ['Missing location context: Hyderabad']}
 
 📊 Evaluation Metrics
 
