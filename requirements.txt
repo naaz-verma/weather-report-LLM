@@ -1,0 +1,10 @@
+streamlit
+python-dotenv
+keybert
+transformers
+pandas
+scikit-learn
+nltk
+dateparser
+python-dateutil
+seaborn
