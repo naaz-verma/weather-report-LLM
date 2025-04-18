@@ -18,36 +18,11 @@ Visualize climate risk trends in Hyderabad.
 
 🏗️ Architecture
 Workflow Diagram:
+
+
 ![image](https://github.com/user-attachments/assets/3c3b02b4-92fe-4450-a8b1-1e274eb2d7dd)
 
-User selects mode (recent/historical/rss)
-            |
-        [Streamlit UI]
-            |
-        run_pipeline()
-            |
-     +-------------------+
-     | News Fetch Module |
-     +-------------------+
-              |
-     +----------------------+
-     | Summarizer (LLM)     |
-     +----------------------+
-              |
-     +---------------------+
-     | Article Classifier   |
-     +---------------------+
-              |
-     +---------------------+
-     | Weather Consistency  |
-     | Validator & Forecast |
-     +---------------------+
-              |
-     +---------------------+
-     | Reference Generator  |
-     +---------------------+
-              |
-         Final Report
+
 
 System Components:
 main.py: Core agent logic.
