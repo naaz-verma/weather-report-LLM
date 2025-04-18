@@ -25,6 +25,7 @@ Workflow Diagram:
 
 
 System Components:
+
 main.py: Core agent logic.
 fetch_news.py: Pulls articles via RSS and Tavily.
 summarizer.py: Summarizes using HuggingFace BART.
@@ -34,6 +35,7 @@ visualizer.py: Streamlit charting.
 
 
 📂 Sources Used
+
 The Guardian - Climate Crisis RSS
 Reuters - Environment News
 Insurance Journal - Catastrophe
